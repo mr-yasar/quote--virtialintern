@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AetherQuotes - Wisdom Generator</title>
+    <!-- Google Fonts: Playfair Display for quotes, Outfit for UI -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated background gradient blobs -->
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Main Panel (Generator) -->
+        <main class="main-content">
+            <header class="app-header">
+                <div class="brand">
+                    <span class="logo-icon">✨</span>
+                    <div>
+                        <h1>AetherQuotes</h1>
+                        <p class="tagline">Wisdom whispered from the digital ether</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="toggle-history-btn" class="icon-btn btn-secondary" title="View History">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-history"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline><line x1="12" y1="7" x2="12" y2="12" y2="12"></line><line x1="12" y1="12" x2="16" y2="14"></line></svg>
+                        <span class="badge" id="history-count">0</span>
+                    </button>
+                </div>
+            </header>
+
+            <section class="quote-section">
+                <div class="quote-card-container">
+                    <!-- Glassmorphic Quote Card -->
+                    <div class="quote-card" id="quote-card">
+                        <div class="quote-decor-top">“</div>
+                        <div class="quote-body">
+                            <blockquote id="quote-text">
+                                Fetch your first quote to begin the journey...
+                            </blockquote>
+                            <cite id="quote-author">— AetherQuotes</cite>
+                        </div>
+                        <div class="quote-decor-bottom">”</div>
+
+                        <!-- Card Action Overlay (Bottom items) -->
+                        <div class="card-footer">
+                            <div class="card-meta">
+                                <span class="badge-pill" id="quote-status">Inspirational</span>
+                            </div>
+                            <div class="card-actions">
+                                <!-- Favorite Button -->
+                                <button id="fav-btn" class="action-btn" title="Add to Favorites" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                </button>
+                                <!-- Copy Button -->
+                                <button id="copy-btn" class="action-btn" title="Copy to Clipboard" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="copy-icon"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                                </button>
+                                <!-- Share Button -->
+                                <button id="share-btn" class="action-btn" title="Share on Twitter" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="share-icon"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generator Trigger Button -->
+                <div class="generator-controls">
+                    <button id="generate-btn" class="primary-btn">
+                        <span class="btn-text">Generate Wisdom</span>
+                        <div class="loader" id="btn-loader"></div>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Sidebar Panel (History Drawer) -->
+        <aside class="history-sidebar" id="history-sidebar">
+            <div class="sidebar-header">
+                <h3>Quote History</h3>
+                <div class="sidebar-actions">
+                    <button id="clear-history-btn" class="text-btn danger-text" title="Clear All History">
+                        Clear All
+                    </button>
+                    <button id="close-history-btn" class="icon-btn btn-close" title="Close Sidebar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- History list -->
+            <div class="history-list" id="history-list">
+                <!-- Dynamic Content Loaded Here -->
+                <div class="empty-history" id="empty-history">
+                    <div class="empty-icon">📜</div>
+                    <p>Your search for wisdom is empty.</p>
+                    <span>Quotes you generate will appear here.</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
